@@ -132,8 +132,24 @@
                         <span class="navbar-text">
                             @yield('breadcrumb')
                         </span>
-                        <div class="ms-auto">
-                            <span class="text-secondary">{{ auth()->user()->name ?? 'Guest' }}</span>
+                        <div class="ms-auto d-flex align-items-center gap-3">
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                    <i class="bi bi-person-circle"></i> {{ auth()->user()->name ?? 'Guest' }}
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><h6 class="dropdown-header">{{ auth()->user()->email ?? '' }}</h6></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                                            @csrf
+                                            <button type="submit" class="dropdown-item">
+                                                <i class="bi bi-box-arrow-right"></i> Logout
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </nav>
