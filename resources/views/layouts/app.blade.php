@@ -96,6 +96,7 @@
                             <i class="bi bi-house-door"></i> Dashboard
                         </a>
                     </li>
+                    @if(auth()->user()->isAdmin())
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('obats*') ? 'active' : '' }}" href="{{ route('obats.index') }}">
                             <i class="bi bi-capsule"></i> Data Obat
@@ -106,6 +107,7 @@
                             <i class="bi bi-building"></i> Supplier
                         </a>
                     </li>
+                    @endif
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('pelanggans*') ? 'active' : '' }}" href="{{ route('pelanggans.index') }}">
                             <i class="bi bi-people"></i> Pelanggan
@@ -116,11 +118,13 @@
                             <i class="bi bi-bag-check"></i> Penjualan
                         </a>
                     </li>
+                    @if(auth()->user()->isAdmin())
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('pembelians*') ? 'active' : '' }}" href="{{ route('pembelians.index') }}">
                             <i class="bi bi-cart3"></i> Pembelian
                         </a>
                     </li>
+                    @endif
                 </ul>
             </nav>
 

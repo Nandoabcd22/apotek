@@ -17,22 +17,26 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 
 // Protected Routes (Require Auth)
 Route::middleware('auth')->group(function () {
+    // Dashboard - Accessible to all authenticated users
     Route::get('/', function () {
         return view('dashboard');
     })->name('dashboard');
 
-    // Supplier Routes
-    Route::resource('suppliers', SupplierController::class)->parameters(['suppliers' => 'supplier:id_supplier']);
-
-    // Obat Routes
-    Route::resource('obats', ObatController::class)->parameters(['obats' => 'obat:id_obat']);
-
-    // Pelanggan Routes
+    // Pelanggan Routes - Accessible to all authenticated users
     Route::resource('pelanggans', PelangganController::class)->parameters(['pelanggans' => 'pelanggan:id_pelanggan']);
 
-    // Penjualan Routes
+    // Penjualan Routes - Accessible to all authenticated users
     Route::resource('penjualans', PenjualanController::class)->parameters(['penjualans' => 'penjualan:no_penjualan']);
 
-    // Pembelian Routes
-    Route::resource('pembelians', PembelianController::class)->parameters(['pembelians' => 'pembelian:no_pembelian']);
+    // Admin Only Routes
+    Route::middleware('role:admin')->group(function () {
+        // Supplier Routes
+        Route::resource('suppliers', SupplierController::class)->parameters(['suppliers' => 'supplier:id_supplier']);
+
+        // Obat Routes
+        Route::resource('obats', ObatController::class)->parameters(['obats' => 'obat:id_obat']);
+
+        // Pembelian Routes
+        Route::resource('pembelians', PembelianController::class)->parameters(['pembelians' => 'pembelian:no_pembelian']);
+    });
 });

@@ -5,12 +5,39 @@ namespace Database\Seeders;
 use App\Models\Supplier;
 use App\Models\Obat;
 use App\Models\Pelanggan;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        // Buat user dummy
+        $users = [
+            [
+                'name' => 'Admin Apotek',
+                'email' => 'admin@apotek.com',
+                'password' => bcrypt('password'),
+                'role' => 'admin'
+            ],
+            [
+                'name' => 'Kasir 1',
+                'email' => 'kasir1@apotek.com',
+                'password' => bcrypt('password'),
+                'role' => 'kasir'
+            ],
+            [
+                'name' => 'Kasir 2',
+                'email' => 'kasir2@apotek.com',
+                'password' => bcrypt('password'),
+                'role' => 'kasir'
+            ],
+        ];
+
+        foreach ($users as $user) {
+            User::create($user);
+        }
+
         // Buat supplier dummy
         $suppliers = [
             [
