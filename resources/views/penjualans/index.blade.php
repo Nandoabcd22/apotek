@@ -1,3 +1,5 @@
+@php $prefix = auth()->user()->getRoutePrefix(); @endphp
+
 @extends('layouts.app')
 
 @section('title', 'Data Penjualan')
@@ -14,9 +16,11 @@
 @section('content')
     <div class="page-header d-flex justify-content-between align-items-center">
         <h3 class="mb-0">Data Penjualan</h3>
-        <a href="{{ route('penjualans.create') }}" class="btn btn-primary">
+        @if(auth()->user()->isApoteker() || auth()->user()->isPelanggan())
+        <a href="{{ route($prefix . '.penjualans.create') }}" class="btn btn-primary">
             <i class="bi bi-plus-lg"></i> Buat Penjualan
         </a>
+        @endif
     </div>
 
     <div class="card">
@@ -29,7 +33,6 @@
                             <th>Tanggal</th>
                             <th>Pelanggan</th>
                             <th>Item</th>
-                            <th>Diskon</th>
                             <th>Total</th>
                             <th>Aksi</th>
                         </tr>
@@ -39,24 +42,25 @@
                             <tr>
                                 <td><strong>{{ $penjualan->no_penjualan }}</strong></td>
                                 <td>{{ $penjualan->tanggal_penjualan->format('d-m-Y') }}</td>
-                                <td>{{ $penjualan->pelanggan->nama_pelanggan ?? '-' }}</td>
+                                <td>{{ $penjualan->user->name ?? '-' }}</td>
                                 <td><span class="badge bg-secondary">{{ $penjualan->details->count() }}</span></td>
-                                <td>{{ $penjualan->diskon }}%</td>
                                 <td>Rp {{ number_format($penjualan->total, 0, ',', '.') }}</td>
                                 <td>
-                                    <a href="{{ route('penjualans.show', $penjualan) }}" class="btn btn-sm btn-info">
+                                    <a href="{{ route($prefix . '.penjualans.show', $penjualan) }}" class="btn btn-sm btn-info">
                                         <i class="bi bi-eye"></i>
                                     </a>
-                                    <a href="{{ route('penjualans.edit', $penjualan) }}" class="btn btn-sm btn-warning">
+                                    @if(auth()->user()->isApoteker() || auth()->user()->isPelanggan())
+                                    <a href="{{ route($prefix . '.penjualans.edit', $penjualan) }}" class="btn btn-sm btn-warning">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <form action="{{ route('penjualans.destroy', $penjualan) }}" method="POST" style="display:inline;">
+                                    <form action="{{ route($prefix . '.penjualans.destroy', $penjualan) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus?')">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </form>
+                                    @endif
                                 </td>
                             </tr>
                         @empty

@@ -6,8 +6,8 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('pelanggans.index') }}">Pelanggan</a></li>
-            <li class="breadcrumb-item active">{{ $pelanggan->id_pelanggan }}</li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.pelanggans.index') }}">Pelanggan</a></li>
+            <li class="breadcrumb-item active">{{ $pelanggan->name }}</li>
         </ol>
     </nav>
 @endsection
@@ -16,10 +16,10 @@
     <div class="page-header d-flex justify-content-between align-items-center">
         <h3 class="mb-0">Detail Pelanggan</h3>
         <div>
-            <a href="{{ route('pelanggans.edit', $pelanggan) }}" class="btn btn-warning">
+            <a href="{{ route('admin.pelanggans.edit', $pelanggan) }}" class="btn btn-warning">
                 <i class="bi bi-pencil"></i> Edit
             </a>
-            <a href="{{ route('pelanggans.index') }}" class="btn btn-secondary">
+            <a href="{{ route('admin.pelanggans.index') }}" class="btn btn-secondary">
                 <i class="bi bi-arrow-left"></i> Kembali
             </a>
         </div>
@@ -33,24 +33,16 @@
                 </div>
                 <div class="card-body">
                     <div class="mb-3">
-                        <label class="form-label">ID Pelanggan</label>
-                        <p class="text-muted">{{ $pelanggan->id_pelanggan }}</p>
-                    </div>
-                    <div class="mb-3">
                         <label class="form-label">Nama Pelanggan</label>
-                        <p class="text-muted">{{ $pelanggan->nama_pelanggan }}</p>
+                        <p class="text-muted">{{ $pelanggan->name }}</p>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Alamat</label>
-                        <p class="text-muted">{{ $pelanggan->alamat }}</p>
+                        <label class="form-label">Email</label>
+                        <p class="text-muted">{{ $pelanggan->email }}</p>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Kota</label>
-                        <p class="text-muted">{{ $pelanggan->kota }}</p>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Telepon</label>
-                        <p class="text-muted">{{ $pelanggan->telepon }}</p>
+                        <label class="form-label">Tanggal Registrasi</label>
+                        <p class="text-muted">{{ $pelanggan->created_at->format('d/m/Y H:i') }}</p>
                     </div>
                 </div>
             </div>
@@ -98,7 +90,6 @@
                                         <th>No. Penjualan</th>
                                         <th>Tanggal</th>
                                         <th>Jumlah Item</th>
-                                        <th>Diskon</th>
                                         <th>Total</th>
                                         <th>Aksi</th>
                                     </tr>
@@ -109,10 +100,9 @@
                                             <td><strong>{{ $penjualan->no_penjualan }}</strong></td>
                                             <td>{{ $penjualan->tanggal_penjualan->format('d-m-Y') }}</td>
                                             <td>{{ $penjualan->details->count() }}</td>
-                                            <td>{{ $penjualan->diskon }}%</td>
                                             <td>Rp {{ number_format($penjualan->total, 0, ',', '.') }}</td>
                                             <td>
-                                                <a href="{{ route('penjualans.show', $penjualan) }}" class="btn btn-sm btn-info">
+                                                <a href="{{ route('admin.penjualans.show', $penjualan) }}" class="btn btn-sm btn-info">
                                                     <i class="bi bi-eye"></i>
                                                 </a>
                                             </td>

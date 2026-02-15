@@ -4,22 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Models\Penjualan;
 use App\Models\PenjualanDetail;
-use App\Models\Pelanggan;
+use App\Models\User;
 use App\Models\Obat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class PenjualanController extends Controller
 {
     public function index()
     {
-        $penjualans = Penjualan::with('pelanggan')->paginate(10);
+        $penjualans = Penjualan::with('user')->paginate(10);
         return view('penjualans.index', compact('penjualans'));
     }
 
     public function create()
     {
-        $pelanggans = Pelanggan::all();
+        $pelanggans = User::where('role', 'pelanggan')->get();
         $obats = Obat::where('stok', '>', 0)->get();
         return view('penjualans.create', compact('pelanggans', 'obats'));
     }
@@ -29,8 +30,7 @@ class PenjualanController extends Controller
         $request->validate([
             'no_penjualan' => 'required|unique:penjualans,no_penjualan',
             'tanggal_penjualan' => 'required|date',
-            'id_pelanggan' => 'required|exists:pelanggans,id_pelanggan',
-            'diskon' => 'nullable|numeric|min:0|max:100',
+            'user_id' => 'required|exists:users,id',
             'items' => 'required|array',
             'items.*.id_obat' => 'required|exists:obats,id_obat',
             'items.*.jumlah' => 'required|integer|min:1',
@@ -40,22 +40,17 @@ class PenjualanController extends Controller
         try {
             DB::beginTransaction();
 
-            $diskon = $request->diskon ?? 0;
             $total = 0;
 
-            // Hitung total sebelum diskon
+            // Hitung total
             foreach ($request->items as $item) {
                 $total += $item['jumlah'] * $item['harga_satuan'];
             }
 
-            // Terapkan diskon
-            $total = $total * (1 - $diskon / 100);
-
             $penjualan = Penjualan::create([
                 'no_penjualan' => $request->no_penjualan,
                 'tanggal_penjualan' => $request->tanggal_penjualan,
-                'id_pelanggan' => $request->id_pelanggan,
-                'diskon' => $diskon,
+                'user_id' => $request->user_id,
                 'total' => $total,
             ]);
 
@@ -78,7 +73,8 @@ class PenjualanController extends Controller
             }
 
             DB::commit();
-            return redirect()->route('penjualans.index')->with('success', 'Penjualan berhasil dibuat');
+            $prefix = auth()->user()->getRoutePrefix();
+            return redirect()->route($prefix . '.penjualans.index')->with('success', 'Penjualan berhasil dibuat');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
@@ -87,13 +83,13 @@ class PenjualanController extends Controller
 
     public function show(Penjualan $penjualan)
     {
-        $penjualan->load('pelanggan', 'details.obat');
+        $penjualan->load('user', 'details.obat');
         return view('penjualans.show', compact('penjualan'));
     }
 
     public function edit(Penjualan $penjualan)
     {
-        $pelanggans = Pelanggan::all();
+        $pelanggans = User::where('role', 'pelanggan')->get();
         $obats = Obat::all();
         $penjualan->load('details.obat');
         return view('penjualans.edit', compact('penjualan', 'pelanggans', 'obats'));
@@ -103,8 +99,7 @@ class PenjualanController extends Controller
     {
         $request->validate([
             'tanggal_penjualan' => 'required|date',
-            'id_pelanggan' => 'required|exists:pelanggans,id_pelanggan',
-            'diskon' => 'nullable|numeric|min:0|max:100',
+            'user_id' => 'required|exists:users,id',
             'items' => 'required|array',
             'items.*.id_obat' => 'required|exists:obats,id_obat',
             'items.*.jumlah' => 'required|integer|min:1',
@@ -125,20 +120,16 @@ class PenjualanController extends Controller
             $penjualan->details()->delete();
 
             // Hitung total baru
-            $diskon = $request->diskon ?? 0;
             $total = 0;
 
             foreach ($request->items as $item) {
                 $total += $item['jumlah'] * $item['harga_satuan'];
             }
 
-            $total = $total * (1 - $diskon / 100);
-
             // Update penjualan
             $penjualan->update([
                 'tanggal_penjualan' => $request->tanggal_penjualan,
-                'id_pelanggan' => $request->id_pelanggan,
-                'diskon' => $diskon,
+                'user_id' => $request->user_id,
                 'total' => $total,
             ]);
 
@@ -161,7 +152,8 @@ class PenjualanController extends Controller
             }
 
             DB::commit();
-            return redirect()->route('penjualans.index')->with('success', 'Penjualan berhasil diperbarui');
+            $prefix = auth()->user()->getRoutePrefix();
+            return redirect()->route($prefix . '.penjualans.index')->with('success', 'Penjualan berhasil diperbarui');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
@@ -182,10 +174,37 @@ class PenjualanController extends Controller
 
             $penjualan->delete();
             DB::commit();
-            return redirect()->route('penjualans.index')->with('success', 'Penjualan berhasil dihapus');
+            $prefix = auth()->user()->getRoutePrefix();
+            return redirect()->route($prefix . '.penjualans.index')->with('success', 'Penjualan berhasil dihapus');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
+    }
+
+    public function history(Request $request)
+    {
+        $query = Penjualan::with('user')->orderBy('tanggal_penjualan', 'desc');
+
+        // Filter by date range
+        if ($request->filled('tanggal_dari')) {
+            $tanggal_dari = Carbon::createFromFormat('Y-m-d', $request->tanggal_dari)->startOfDay();
+            $query->where('tanggal_penjualan', '>=', $tanggal_dari);
+        }
+
+        if ($request->filled('tanggal_sampai')) {
+            $tanggal_sampai = Carbon::createFromFormat('Y-m-d', $request->tanggal_sampai)->endOfDay();
+            $query->where('tanggal_penjualan', '<=', $tanggal_sampai);
+        }
+
+        // Filter by pelanggan
+        if ($request->filled('user_id')) {
+            $query->where('user_id', $request->user_id);
+        }
+
+        $penjualans = $query->paginate(15);
+        $pelanggans = User::where('role', 'pelanggan')->get();
+
+        return view('penjualans.history', compact('penjualans', 'pelanggans'));
     }
 }

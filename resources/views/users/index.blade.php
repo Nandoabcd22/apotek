@@ -9,7 +9,7 @@
 @section('content')
 <div class="page-header d-flex justify-content-between align-items-center">
     <h1>Daftar Apoteker</h1>
-    <a href="{{ route('users.create') }}" class="btn btn-primary">
+    <a href="{{ route('admin.users.create') }}" class="btn btn-primary">
         <i class="bi bi-plus-circle"></i> Tambah Apoteker
     </a>
 </div>
@@ -34,16 +34,16 @@
                         <td>{{ $user->email }}</td>
                         <td>
                             <div class="btn-group btn-group-sm" role="group">
-                                <a href="{{ route('users.show', $user) }}" class="btn btn-info" title="Lihat">
+                                <a href="{{ route('admin.users.show', $user) }}" class="btn btn-info" title="Lihat">
                                     <i class="bi bi-eye"></i> Lihat
                                 </a>
-                                <a href="{{ route('users.edit', $user) }}" class="btn btn-warning" title="Edit">
+                                <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-warning" title="Edit">
                                     <i class="bi bi-pencil"></i> Edit
                                 </a>
                                 <button class="btn btn-danger" onclick="deleteUser({{ $user->id }})" title="Hapus">
                                     <i class="bi bi-trash"></i> Hapus
                                 </button>
-                                <form id="delete-form-{{ $user->id }}" action="{{ route('users.destroy', $user) }}" method="POST" style="display: none;">
+                                <form id="delete-form-{{ $user->id }}" action="{{ route('admin.users.destroy', $user) }}" method="POST" style="display: none;">
                                     @csrf
                                     @method('DELETE')
                                 </form>

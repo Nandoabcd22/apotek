@@ -6,7 +6,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('obats.index') }}">Obat</a></li>
+            <li class="breadcrumb-item"><a href="{{ route($prefix . '.obats.index') }}">Obat</a></li>
             <li class="breadcrumb-item active">Edit</li>
         </ol>
     </nav>
@@ -21,7 +21,7 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('obats.update', $obat) }}" method="POST">
+                    <form action="{{ route($prefix . '.obats.update', $obat) }}" method="POST">
                         @csrf
                         @method('PUT')
 
@@ -104,11 +104,20 @@
                             @enderror
                         </div>
 
+                        <div class="mb-3">
+                            <label for="tanggal_kadaluarsa" class="form-label">Tanggal Kadaluarsa</label>
+                            <input type="date" class="form-control @error('tanggal_kadaluarsa') is-invalid @enderror" 
+                                   id="tanggal_kadaluarsa" name="tanggal_kadaluarsa" value="{{ $obat->tanggal_kadaluarsa?->format('Y-m-d') }}" required>
+                            @error('tanggal_kadaluarsa')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
                         <div class="d-flex gap-2">
                             <button type="submit" class="btn btn-primary">
                                 <i class="bi bi-check-lg"></i> Perbarui
                             </button>
-                            <a href="{{ route('obats.index') }}" class="btn btn-secondary">
+                            <a href="{{ route($prefix . '.obats.index') }}" class="btn btn-secondary">
                                 <i class="bi bi-x-lg"></i> Batal
                             </a>
                         </div>

@@ -27,24 +27,8 @@ Route::middleware('auth')->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
-    // Apoteker Routes - Apoteker dapat mengelola obat dan melihat penjualan
-    Route::middleware('role:apoteker')->group(function () {
-        // Obat - Apoteker dapat CRUD obat
-        Route::resource('obats', ObatController::class)->parameters(['obats' => 'obat:id_obat']);
-        // Penjualan - Apoteker dapat melihat history penjualan
-        Route::resource('penjualans', PenjualanController::class)->only(['index', 'show'])->parameters(['penjualans' => 'penjualan:no_penjualan']);
-    });
-
-    // Pelanggan Routes - Pelanggan dapat melihat obat dan melakukan pembelian
-    Route::middleware('role:pelanggan')->group(function () {
-        // Obat - Pelanggan dapat melihat daftar obat
-        Route::resource('obats', ObatController::class)->only(['index', 'show'])->parameters(['obats' => 'obat:id_obat']);
-        // Penjualan - Pelanggan dapat melihat penjualannya dan membuat penjualan baru
-        Route::resource('penjualans', PenjualanController::class)->parameters(['penjualans' => 'penjualan:no_penjualan']);
-    });
-
     // Admin Routes - Admin dapat mengakses semua
-    Route::middleware('role:admin')->group(function () {
+    Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
         // Users/Apoteker - Admin dapat mengelola apoteker
         Route::resource('users', UserController::class)->parameters(['users' => 'user:id']);
 
@@ -54,8 +38,8 @@ Route::middleware('auth')->group(function () {
         // Obat Routes
         Route::resource('obats', ObatController::class)->parameters(['obats' => 'obat:id_obat']);
 
-        // Pelanggan Routes
-        Route::resource('pelanggans', PelangganController::class)->only(['index', 'show'])->parameters(['pelanggans' => 'pelanggan:id_pelanggan']);
+        // Pelanggan Routes - Admin dapat mengelola pelanggan
+        Route::resource('pelanggans', PelangganController::class)->parameters(['pelanggans' => 'pelanggan:id']);
 
         // Penjualan Routes - Admin dapat melihat report penjualan
         Route::resource('penjualans', PenjualanController::class)->only(['index', 'show'])->parameters(['penjualans' => 'penjualan:no_penjualan']);
@@ -63,5 +47,25 @@ Route::middleware('auth')->group(function () {
 
         // Pembelian Routes
         Route::resource('pembelians', PembelianController::class)->parameters(['pembelians' => 'pembelian:no_pembelian']);
+    });
+
+    // Apoteker Routes - Apoteker dapat mengelola obat dan melihat penjualan
+    Route::middleware('role:apoteker')->prefix('apoteker')->name('apoteker.')->group(function () {
+        // Obat - Apoteker dapat CRUD obat
+        Route::resource('obats', ObatController::class)->parameters(['obats' => 'obat:id_obat']);
+        // Custom routes untuk apoteker
+        Route::get('/obats-expired', [ObatController::class, 'expired'])->name('obats.expired');
+        Route::get('/obats-search', [ObatController::class, 'search'])->name('obats.search');
+        // Penjualan - Apoteker dapat CRUD penjualan
+        Route::resource('penjualans', PenjualanController::class)->parameters(['penjualans' => 'penjualan:no_penjualan']);
+        Route::get('/penjualans-history', [PenjualanController::class, 'history'])->name('penjualans.history');
+    });
+
+    // Pelanggan Routes - Pelanggan dapat melihat obat dan melakukan pembelian
+    Route::middleware('role:pelanggan')->prefix('pelanggan')->name('pelanggan.')->group(function () {
+        // Obat - Pelanggan dapat melihat daftar obat
+        Route::resource('obats', ObatController::class)->only(['index', 'show'])->parameters(['obats' => 'obat:id_obat']);
+        // Penjualan - Pelanggan dapat CRUD penjualan
+        Route::resource('penjualans', PenjualanController::class)->parameters(['penjualans' => 'penjualan:no_penjualan']);
     });
 });

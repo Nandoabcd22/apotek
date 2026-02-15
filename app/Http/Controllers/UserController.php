@@ -40,7 +40,7 @@ class UserController extends Controller
 
         User::create($validated);
 
-        return redirect()->route('users.index')->with('success', 'Apoteker berhasil ditambahkan.');
+        return redirect()->route('admin.users.index')->with('success', 'Apoteker berhasil ditambahkan.');
     }
 
     /**
@@ -88,7 +88,7 @@ class UserController extends Controller
 
         $user->update($validated);
 
-        return redirect()->route('users.show', $user)->with('success', 'Apoteker berhasil diperbarui.');
+        return redirect()->route('admin.users.show', $user)->with('success', 'Apoteker berhasil diperbarui');
     }
 
     /**
@@ -102,6 +102,6 @@ class UserController extends Controller
 
         $user->delete();
 
-        return redirect()->route('users.index')->with('success', 'Apoteker berhasil dihapus.');
+        return redirect()->route('admin.users.index')->with('success', 'Apoteker berhasil dihapus');
     }
 }

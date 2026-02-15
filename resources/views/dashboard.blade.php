@@ -1,3 +1,5 @@
+@php $prefix = auth()->user()->getRoutePrefix(); @endphp
+
 @extends('layouts.app')
 
 @section('title', 'Dashboard')
@@ -32,7 +34,7 @@
             <div class="card bg-info text-white">
                 <div class="card-body">
                     <h6 class="card-title">Total Pelanggan</h6>
-                    <h3>{{ \App\Models\Pelanggan::count() }}</h3>
+                    <h3>{{ \App\Models\User::where('role', 'pelanggan')->count() }}</h3>
                 </div>
             </div>
         </div>
@@ -66,8 +68,8 @@
                             <tbody>
                                 @foreach (\App\Models\Penjualan::latest()->take(5)->get() as $penjualan)
                                     <tr>
-                                        <td><a href="{{ route('penjualans.show', $penjualan) }}">{{ $penjualan->no_penjualan }}</a></td>
-                                        <td>{{ $penjualan->pelanggan->nama_pelanggan ?? '-' }}</td>
+                                        <td><a href="{{ route($prefix . '.penjualans.show', $penjualan) }}">{{ $penjualan->no_penjualan }}</a></td>
+                                        <td>{{ $penjualan->user->name ?? '-' }}</td>
                                         <td>Rp {{ number_format($penjualan->total, 0, ',', '.') }}</td>
                                         <td>{{ $penjualan->tanggal_penjualan->format('d-m-Y') }}</td>
                                     </tr>
@@ -98,7 +100,7 @@
                             <tbody>
                                 @foreach (\App\Models\Pembelian::latest()->take(5)->get() as $pembelian)
                                     <tr>
-                                        <td><a href="{{ route('pembelians.show', $pembelian) }}">{{ $pembelian->no_pembelian }}</a></td>
+                                        <td><a href="{{ route('admin.pembelians.show', $pembelian) }}">{{ $pembelian->no_pembelian }}</a></td>
                                         <td>{{ $pembelian->supplier->nama_supplier ?? '-' }}</td>
                                         <td>Rp {{ number_format($pembelian->total, 0, ',', '.') }}</td>
                                         <td>{{ $pembelian->tanggal_pembelian->format('d-m-Y') }}</td>

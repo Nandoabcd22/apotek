@@ -6,7 +6,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('pembelians.index') }}">Pembelian</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.pembelians.index') }}">Pembelian</a></li>
             <li class="breadcrumb-item active">Edit</li>
         </ol>
     </nav>
@@ -19,7 +19,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <form action="{{ route('pembelians.update', $pembelian) }}" method="POST" id="formPembelian">
+            <form action="{{ route('admin.pembelians.update', $pembelian) }}" method="POST" id="formPembelian">
                 @csrf
                 @method('PUT')
 
@@ -139,7 +139,7 @@
                     <button type="submit" class="btn btn-primary">
                         <i class="bi bi-check-lg"></i> Perbarui Pembelian
                     </button>
-                    <a href="{{ route('pembelians.index') }}" class="btn btn-secondary">
+                    <a href="{{ route('admin.pembelians.index') }}" class="btn btn-secondary">
                         <i class="bi bi-x-lg"></i> Batal
                     </a>
                 </div>

@@ -14,7 +14,7 @@
 @section('content')
     <div class="page-header d-flex justify-content-between align-items-center">
         <h3 class="mb-0">Data Pembelian</h3>
-        <a href="{{ route('pembelians.create') }}" class="btn btn-primary">
+        <a href="{{ route('admin.pembelians.create') }}" class="btn btn-primary">
             <i class="bi bi-plus-lg"></i> Buat Pembelian
         </a>
     </div>
@@ -44,13 +44,13 @@
                                 <td>{{ $pembelian->diskon }}%</td>
                                 <td>Rp {{ number_format($pembelian->total, 0, ',', '.') }}</td>
                                 <td>
-                                    <a href="{{ route('pembelians.show', $pembelian) }}" class="btn btn-sm btn-info">
+                                    <a href="{{ route('admin.pembelians.show', $pembelian) }}" class="btn btn-sm btn-info">
                                         <i class="bi bi-eye"></i>
                                     </a>
-                                    <a href="{{ route('pembelians.edit', $pembelian) }}" class="btn btn-sm btn-warning">
+                                    <a href="{{ route('admin.pembelians.edit', $pembelian) }}" class="btn btn-sm btn-warning">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <form action="{{ route('pembelians.destroy', $pembelian) }}" method="POST" style="display:inline;">
+                                    <form action="{{ route('admin.pembelians.destroy', $pembelian) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus?')">

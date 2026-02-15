@@ -14,7 +14,7 @@
 @section('content')
     <div class="page-header d-flex justify-content-between align-items-center">
         <h3 class="mb-0">Data Pelanggan</h3>
-        <a href="{{ route('pelanggans.create') }}" class="btn btn-primary">
+        <a href="{{ route('admin.pelanggans.create') }}" class="btn btn-primary">
             <i class="bi bi-plus-lg"></i> Tambah Pelanggan
         </a>
     </div>
@@ -25,30 +25,26 @@
                 <table class="table table-hover">
                     <thead class="table-light">
                         <tr>
-                            <th>ID Pelanggan</th>
-                            <th>Nama Pelanggan</th>
-                            <th>Alamat</th>
-                            <th>Kota</th>
-                            <th>Telepon</th>
+                            <th>Nama</th>
+                            <th>Email</th>
+                            <th>Tanggal Registrasi</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ($pelanggans as $pelanggan)
                             <tr>
-                                <td><strong>{{ $pelanggan->id_pelanggan }}</strong></td>
-                                <td>{{ $pelanggan->nama_pelanggan }}</td>
-                                <td>{{ Str::limit($pelanggan->alamat, 30) }}</td>
-                                <td>{{ $pelanggan->kota }}</td>
-                                <td>{{ $pelanggan->telepon }}</td>
+                                <td><strong>{{ $pelanggan->name }}</strong></td>
+                                <td>{{ $pelanggan->email }}</td>
+                                <td>{{ $pelanggan->created_at->format('d/m/Y H:i') }}</td>
                                 <td>
-                                    <a href="{{ route('pelanggans.show', $pelanggan) }}" class="btn btn-sm btn-info">
+                                    <a href="{{ route('admin.pelanggans.show', $pelanggan) }}" class="btn btn-sm btn-info">
                                         <i class="bi bi-eye"></i>
                                     </a>
-                                    <a href="{{ route('pelanggans.edit', $pelanggan) }}" class="btn btn-sm btn-warning">
+                                    <a href="{{ route('admin.pelanggans.edit', $pelanggan) }}" class="btn btn-sm btn-warning">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <form action="{{ route('pelanggans.destroy', $pelanggan) }}" method="POST" style="display:inline;">
+                                    <form action="{{ route('admin.pelanggans.destroy', $pelanggan) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus?')">
@@ -59,7 +55,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="text-center text-muted">Tidak ada data</td>
+                                <td colspan="4" class="text-center text-muted">Tidak ada data</td>
                             </tr>
                         @endforelse
                     </tbody>

@@ -14,7 +14,7 @@
 @section('content')
     <div class="page-header d-flex justify-content-between align-items-center">
         <h3 class="mb-0">Data Supplier</h3>
-        <a href="{{ route('suppliers.create') }}" class="btn btn-primary">
+        <a href="{{ route('admin.suppliers.create') }}" class="btn btn-primary">
             <i class="bi bi-plus-lg"></i> Tambah Supplier
         </a>
     </div>
@@ -42,13 +42,13 @@
                                 <td>{{ $supplier->kota }}</td>
                                 <td>{{ $supplier->telepon }}</td>
                                 <td>
-                                    <a href="{{ route('suppliers.show', $supplier) }}" class="btn btn-sm btn-info">
+                                    <a href="{{ route('admin.suppliers.show', $supplier) }}" class="btn btn-sm btn-info">
                                         <i class="bi bi-eye"></i>
                                     </a>
-                                    <a href="{{ route('suppliers.edit', $supplier) }}" class="btn btn-sm btn-warning">
+                                    <a href="{{ route('admin.suppliers.edit', $supplier) }}" class="btn btn-sm btn-warning">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <form action="{{ route('suppliers.destroy', $supplier) }}" method="POST" style="display:inline;">
+                                    <form action="{{ route('admin.suppliers.destroy', $supplier) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus?')">

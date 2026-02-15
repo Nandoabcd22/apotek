@@ -22,11 +22,13 @@ class Obat extends Model
         'harga_jual',
         'stok',
         'id_supplier',
+        'tanggal_kadaluarsa',
     ];
 
     protected $casts = [
         'harga_beli' => 'decimal:2',
         'harga_jual' => 'decimal:2',
+        'tanggal_kadaluarsa' => 'date',
     ];
 
     public function supplier(): BelongsTo

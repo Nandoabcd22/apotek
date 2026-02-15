@@ -6,7 +6,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('pelanggans.index') }}">Pelanggan</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.pelanggans.index') }}">Pelanggan</a></li>
             <li class="breadcrumb-item active">Edit</li>
         </ol>
     </nav>
@@ -21,56 +21,48 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('pelanggans.update', $pelanggan) }}" method="POST">
+                    <form action="{{ route('admin.pelanggans.update', $pelanggan) }}" method="POST">
                         @csrf
                         @method('PUT')
 
                         <div class="mb-3">
-                            <label for="id_pelanggan" class="form-label">ID Pelanggan</label>
-                            <input type="text" class="form-control" readonly value="{{ $pelanggan->id_pelanggan }}">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="nama_pelanggan" class="form-label">Nama Pelanggan</label>
-                            <input type="text" class="form-control @error('nama_pelanggan') is-invalid @enderror" 
-                                   id="nama_pelanggan" name="nama_pelanggan" value="{{ $pelanggan->nama_pelanggan }}" required>
-                            @error('nama_pelanggan')
+                            <label for="name" class="form-label">Nama Pelanggan</label>
+                            <input type="text" class="form-control @error('name') is-invalid @enderror" 
+                                   id="name" name="name" value="{{ $pelanggan->name }}" required>
+                            @error('name')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
                         <div class="mb-3">
-                            <label for="alamat" class="form-label">Alamat</label>
-                            <textarea class="form-control @error('alamat') is-invalid @enderror" 
-                                      id="alamat" name="alamat" rows="3" required>{{ $pelanggan->alamat }}</textarea>
-                            @error('alamat')
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control @error('email') is-invalid @enderror" 
+                                   id="email" name="email" value="{{ $pelanggan->email }}" required>
+                            @error('email')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
                         <div class="mb-3">
-                            <label for="kota" class="form-label">Kota</label>
-                            <input type="text" class="form-control @error('kota') is-invalid @enderror" 
-                                   id="kota" name="kota" value="{{ $pelanggan->kota }}" required>
-                            @error('kota')
+                            <label for="password" class="form-label">Password Baru (Kosongkan jika tidak ingin mengubah)</label>
+                            <input type="password" class="form-control @error('password') is-invalid @enderror" 
+                                   id="password" name="password">
+                            @error('password')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
                         <div class="mb-3">
-                            <label for="telepon" class="form-label">Telepon</label>
-                            <input type="text" class="form-control @error('telepon') is-invalid @enderror" 
-                                   id="telepon" name="telepon" value="{{ $pelanggan->telepon }}" required>
-                            @error('telepon')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
+                            <input type="password" class="form-control" 
+                                   id="password_confirmation" name="password_confirmation">
                         </div>
 
                         <div class="d-flex gap-2">
                             <button type="submit" class="btn btn-primary">
                                 <i class="bi bi-check-lg"></i> Perbarui
                             </button>
-                            <a href="{{ route('pelanggans.index') }}" class="btn btn-secondary">
+                            <a href="{{ route('admin.pelanggans.show', $pelanggan) }}" class="btn btn-secondary">
                                 <i class="bi bi-x-lg"></i> Batal
                             </a>
                         </div>

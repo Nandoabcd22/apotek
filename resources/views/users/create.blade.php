@@ -3,7 +3,7 @@
 @section('title', 'Tambah Apoteker')
 
 @section('breadcrumb')
-    <a href="{{ route('dashboard') }}">Dashboard</a> / <a href="{{ route('users.index') }}">Daftar Apoteker</a> / Tambah Apoteker
+    <a href="{{ route('dashboard') }}">Dashboard</a> / <a href="{{ route('admin.users.index') }}">Daftar Apoteker</a> / Tambah Apoteker
 @endsection
 
 @section('content')
@@ -15,7 +15,7 @@
     <div class="col-md-8">
         <div class="card">
             <div class="card-body">
-                <form action="{{ route('users.store') }}" method="POST">
+                <form action="{{ route('admin.users.store') }}" method="POST">
                     @csrf
 
                     <div class="mb-3">
@@ -51,7 +51,7 @@
                         <button type="submit" class="btn btn-primary">
                             <i class="bi bi-check-circle"></i> Simpan
                         </button>
-                        <a href="{{ route('users.index') }}" class="btn btn-secondary">
+                        <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">
                             <i class="bi bi-arrow-left"></i> Kembali
                         </a>
                     </div>

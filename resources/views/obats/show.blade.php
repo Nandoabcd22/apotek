@@ -1,12 +1,14 @@
 @extends('layouts.app')
 
+@php $prefix = auth()->user()->getRoutePrefix(); @endphp
+
 @section('title', 'Detail Obat')
 
 @section('breadcrumb')
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('obats.index') }}">Obat</a></li>
+            <li class="breadcrumb-item"><a href="{{ route($prefix . '.obats.index') }}">Obat</a></li>
             <li class="breadcrumb-item active">{{ $obat->id_obat }}</li>
         </ol>
     </nav>
@@ -16,10 +18,12 @@
     <div class="page-header d-flex justify-content-between align-items-center">
         <h3 class="mb-0">Detail Obat</h3>
         <div>
-            <a href="{{ route('obats.edit', $obat) }}" class="btn btn-warning">
-                <i class="bi bi-pencil"></i> Edit
-            </a>
-            <a href="{{ route('obats.index') }}" class="btn btn-secondary">
+            @if(auth()->user()->isAdmin() || auth()->user()->isApoteker())
+                <a href="{{ route($prefix . '.obats.edit', $obat) }}" class="btn btn-warning">
+                    <i class="bi bi-pencil"></i> Edit
+                </a>
+            @endif
+            <a href="{{ route($prefix . '.obats.index') }}" class="btn btn-secondary">
                 <i class="bi bi-arrow-left"></i> Kembali
             </a>
         </div>

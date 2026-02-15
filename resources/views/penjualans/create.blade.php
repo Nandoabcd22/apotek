@@ -1,3 +1,5 @@
+@php $prefix = auth()->user()->getRoutePrefix(); @endphp
+
 @extends('layouts.app')
 
 @section('title', 'Buat Penjualan')
@@ -6,7 +8,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('penjualans.index') }}">Penjualan</a></li>
+            <li class="breadcrumb-item"><a href="{{ route($prefix . '.penjualans.index') }}">Penjualan</a></li>
             <li class="breadcrumb-item active">Buat</li>
         </ol>
     </nav>
@@ -19,13 +21,13 @@
 
     <div class="row">
         <div class="col-md-12">
-            <form action="{{ route('penjualans.store') }}" method="POST" id="formPenjualan">
+            <form action="{{ route($prefix . '.penjualans.store') }}" method="POST" id="formPenjualan">
                 @csrf
 
-                <div class="row mb-4">
-                    <div class="col-md-3">
-                        <div class="card">
-                            <div class="card-body">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="no_penjualan" class="form-label">No. Penjualan</label>
                                     <input type="text" class="form-control @error('no_penjualan') is-invalid @enderror" 
@@ -35,11 +37,7 @@
                                     @enderror
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card">
-                            <div class="card-body">
+                            <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="tanggal_penjualan" class="form-label">Tanggal</label>
                                     <input type="date" class="form-control @error('tanggal_penjualan') is-invalid @enderror" 
@@ -49,35 +47,17 @@
                                     @enderror
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card">
-                            <div class="card-body">
+                            <div class="col-md-4">
                                 <div class="mb-3">
-                                    <label for="id_pelanggan" class="form-label">Pelanggan</label>
-                                    <select class="form-select @error('id_pelanggan') is-invalid @enderror" 
-                                            id="id_pelanggan" name="id_pelanggan" required>
+                                    <label for="user_id" class="form-label">Pelanggan</label>
+                                    <select class="form-select @error('user_id') is-invalid @enderror" 
+                                            id="user_id" name="user_id" required>
                                         <option value="">-- Pilih Pelanggan --</option>
                                         @foreach ($pelanggans as $pelanggan)
-                                            <option value="{{ $pelanggan->id_pelanggan }}">{{ $pelanggan->nama_pelanggan }}</option>
+                                            <option value="{{ $pelanggan->id }}">{{ $pelanggan->name }}</option>
                                         @endforeach
                                     </select>
-                                    @error('id_pelanggan')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="mb-3">
-                                    <label for="diskon" class="form-label">Diskon (%)</label>
-                                    <input type="number" class="form-control @error('diskon') is-invalid @enderror" 
-                                           id="diskon" name="diskon" value="0" min="0" max="100" step="0.01">
-                                    @error('diskon')
+                                    @error('user_id')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -111,26 +91,9 @@
                             </table>
                         </div>
 
-                        <div class="row mt-4">
-                            <div class="col-md-8"></div>
-                            <div class="col-md-4">
-                                <div class="card bg-light">
-                                    <div class="card-body">
-                                        <div class="row mb-2">
-                                            <div class="col-6"><strong>Subtotal:</strong></div>
-                                            <div class="col-6 text-end">Rp <span id="subtotalDisplay">0</span></div>
-                                        </div>
-                                        <div class="row mb-2">
-                                            <div class="col-6"><strong>Diskon:</strong></div>
-                                            <div class="col-6 text-end"><span id="diskonDisplay">0</span>% (Rp <span id="diskonRUpDisplay">0</span>)</div>
-                                        </div>
-                                        <hr>
-                                        <div class="row">
-                                            <div class="col-6"><strong>Total:</strong></div>
-                                            <div class="col-6 text-end"><strong>Rp <span id="totalDisplay">0</span></strong></div>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top">
+                            <div class="text-end flex-grow-1">
+                                <h5 class="mb-0">Total: <span class="text-primary">Rp <span id="totalDisplay">0</span></span></h5>
                             </div>
                         </div>
                     </div>
@@ -140,7 +103,7 @@
                     <button type="submit" class="btn btn-primary">
                         <i class="bi bi-check-lg"></i> Simpan Penjualan
                     </button>
-                    <a href="{{ route('penjualans.index') }}" class="btn btn-secondary">
+                    <a href="{{ route($prefix . '.penjualans.index') }}" class="btn btn-secondary">
                         <i class="bi bi-x-lg"></i> Batal
                     </a>
                 </div>
@@ -212,21 +175,12 @@
                 total += harga * jumlah;
             });
 
-            const diskon = parseFloat(document.getElementById('diskon').value) || 0;
-            const diskonRUp = total * (diskon / 100);
-            const finalTotal = total - diskonRUp;
-
-            document.getElementById('subtotalDisplay').textContent = formatNumber(total);
-            document.getElementById('diskonDisplay').textContent = diskon;
-            document.getElementById('diskonRUpDisplay').textContent = formatNumber(diskonRUp);
-            document.getElementById('totalDisplay').textContent = formatNumber(finalTotal);
+            document.getElementById('totalDisplay').textContent = formatNumber(total);
         }
 
         function formatNumber(num) {
             return new Intl.NumberFormat('id-ID').format(num);
         }
-
-        document.getElementById('diskon').addEventListener('change', calculateTotal);
 
         // Add initial item
         addItem();

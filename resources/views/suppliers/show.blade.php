@@ -6,7 +6,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('suppliers.index') }}">Supplier</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.suppliers.index') }}">Supplier</a></li>
             <li class="breadcrumb-item active">{{ $supplier->id_supplier }}</li>
         </ol>
     </nav>
@@ -16,10 +16,10 @@
     <div class="page-header d-flex justify-content-between align-items-center">
         <h3 class="mb-0">Detail Supplier</h3>
         <div>
-            <a href="{{ route('suppliers.edit', $supplier) }}" class="btn btn-warning">
+            <a href="{{ route('admin.suppliers.edit', $supplier) }}" class="btn btn-warning">
                 <i class="bi bi-pencil"></i> Edit
             </a>
-            <a href="{{ route('suppliers.index') }}" class="btn btn-secondary">
+            <a href="{{ route('admin.suppliers.index') }}" class="btn btn-secondary">
                 <i class="bi bi-arrow-left"></i> Kembali
             </a>
         </div>

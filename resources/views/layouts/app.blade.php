@@ -91,41 +91,43 @@
                     <small>Management System</small>
                 </div>
                 <ul class="nav flex-column">
+                    @unless(auth()->user()->isApoteker() || auth()->user()->isPelanggan())
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
                             <i class="bi bi-house-door"></i> Dashboard
                         </a>
                     </li>
+                    @endunless
 
                     @if(auth()->user()->isAdmin())
                     <!-- Admin Menu -->
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('users*') ? 'active' : '' }}" href="{{ route('users.index') }}">
+                        <a class="nav-link {{ request()->routeIs('admin.users*') ? 'active' : '' }}" href="{{ route('admin.users.index') }}">
                             <i class="bi bi-person-badge"></i> Daftar Apoteker
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('obats*') ? 'active' : '' }}" href="{{ route('obats.index') }}">
+                        <a class="nav-link {{ request()->routeIs('admin.obats*') ? 'active' : '' }}" href="{{ route('admin.obats.index') }}">
                             <i class="bi bi-capsule"></i> Data Obat
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('suppliers*') ? 'active' : '' }}" href="{{ route('suppliers.index') }}">
+                        <a class="nav-link {{ request()->routeIs('admin.suppliers*') ? 'active' : '' }}" href="{{ route('admin.suppliers.index') }}">
                             <i class="bi bi-building"></i> Supplier
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('pelanggans*') ? 'active' : '' }}" href="{{ route('pelanggans.index') }}">
+                        <a class="nav-link {{ request()->routeIs('admin.pelanggans*') ? 'active' : '' }}" href="{{ route('admin.pelanggans.index') }}">
                             <i class="bi bi-people"></i> Daftar Pelanggan
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('penjualans*') ? 'active' : '' }}" href="{{ route('penjualans.index') }}">
+                        <a class="nav-link {{ request()->routeIs('admin.penjualans*') ? 'active' : '' }}" href="{{ route('admin.penjualans.index') }}">
                             <i class="bi bi-bag-check"></i> Report Penjualan
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('pembelians*') ? 'active' : '' }}" href="{{ route('pembelians.index') }}">
+                        <a class="nav-link {{ request()->routeIs('admin.pembelians*') ? 'active' : '' }}" href="{{ route('admin.pembelians.index') }}">
                             <i class="bi bi-cart3"></i> Daftar Pembelian
                         </a>
                     </li>
@@ -133,25 +135,40 @@
                     @elseif(auth()->user()->isApoteker())
                     <!-- Apoteker Menu -->
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('obats*') ? 'active' : '' }}" href="{{ route('obats.index') }}">
+                        <a class="nav-link {{ request()->routeIs('apoteker.obats.index') ? 'active' : '' }}" href="{{ route('apoteker.obats.index') }}">
                             <i class="bi bi-capsule"></i> Data Obat
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('penjualans*') ? 'active' : '' }}" href="{{ route('penjualans.index') }}">
-                            <i class="bi bi-bag-check"></i> History Penjualan
+                        <a class="nav-link {{ request()->routeIs('apoteker.obats.search') ? 'active' : '' }}" href="{{ route('apoteker.obats.search') }}">
+                            <i class="bi bi-search"></i> Cari & Filter
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('apoteker.obats.expired') ? 'active' : '' }}" href="{{ route('apoteker.obats.expired') }}">
+                            <i class="bi bi-exclamation-triangle"></i> Obat Kadaluarsa
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('apoteker.penjualans.index') ? 'active' : '' }}" href="{{ route('apoteker.penjualans.index') }}">
+                            <i class="bi bi-bag-check"></i> Penjualan
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('apoteker.penjualans.history') ? 'active' : '' }}" href="{{ route('apoteker.penjualans.history') }}">
+                            <i class="bi bi-clock-history"></i> History Penjualan
                         </a>
                     </li>
 
                     @elseif(auth()->user()->isPelanggan())
                     <!-- Pelanggan Menu -->
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('obats*') ? 'active' : '' }}" href="{{ route('obats.index') }}">
+                        <a class="nav-link {{ request()->routeIs('pelanggan.obats*') ? 'active' : '' }}" href="{{ route('pelanggan.obats.index') }}">
                             <i class="bi bi-capsule"></i> Daftar Obat
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('penjualans*') ? 'active' : '' }}" href="{{ route('penjualans.index') }}">
+                        <a class="nav-link {{ request()->routeIs('pelanggan.penjualans*') ? 'active' : '' }}" href="{{ route('pelanggan.penjualans.index') }}">
                             <i class="bi bi-bag-check"></i> Pembelian Saya
                         </a>
                     </li>

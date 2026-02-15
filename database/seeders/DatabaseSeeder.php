@@ -89,7 +89,8 @@ class DatabaseSeeder extends Seeder
                 'harga_beli' => 500,
                 'harga_jual' => 1000,
                 'stok' => 100,
-                'id_supplier' => 'SP001'
+                'id_supplier' => 'SP001',
+                'tanggal_kadaluarsa' => date('Y-m-d', strtotime('+1 year'))
             ],
             [
                 'id_obat' => 'OB002',
@@ -99,7 +100,8 @@ class DatabaseSeeder extends Seeder
                 'harga_beli' => 600,
                 'harga_jual' => 1500,
                 'stok' => 80,
-                'id_supplier' => 'SP001'
+                'id_supplier' => 'SP001',
+                'tanggal_kadaluarsa' => date('Y-m-d', strtotime('+2 months'))
             ],
             [
                 'id_obat' => 'OB003',
@@ -109,7 +111,8 @@ class DatabaseSeeder extends Seeder
                 'harga_beli' => 1200,
                 'harga_jual' => 2500,
                 'stok' => 50,
-                'id_supplier' => 'SP002'
+                'id_supplier' => 'SP002',
+                'tanggal_kadaluarsa' => date('Y-m-d', strtotime('-10 days'))
             ],
             [
                 'id_obat' => 'OB004',
@@ -119,7 +122,8 @@ class DatabaseSeeder extends Seeder
                 'harga_beli' => 800,
                 'harga_jual' => 1800,
                 'stok' => 75,
-                'id_supplier' => 'SP003'
+                'id_supplier' => 'SP003',
+                'tanggal_kadaluarsa' => date('Y-m-d', strtotime('+6 months'))
             ],
             [
                 'id_obat' => 'OB005',
@@ -129,7 +133,8 @@ class DatabaseSeeder extends Seeder
                 'harga_beli' => 1000,
                 'harga_jual' => 2000,
                 'stok' => 60,
-                'id_supplier' => 'SP002'
+                'id_supplier' => 'SP002',
+                'tanggal_kadaluarsa' => date('Y-m-d', strtotime('+1 month'))
             ],
             [
                 'id_obat' => 'OB006',
@@ -139,7 +144,8 @@ class DatabaseSeeder extends Seeder
                 'harga_beli' => 1500,
                 'harga_jual' => 3000,
                 'stok' => 40,
-                'id_supplier' => 'SP001'
+                'id_supplier' => 'SP001',
+                'tanggal_kadaluarsa' => date('Y-m-d', strtotime('+3 years'))
             ],
         ];
 

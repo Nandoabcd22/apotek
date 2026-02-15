@@ -6,7 +6,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('suppliers.index') }}">Supplier</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.suppliers.index') }}">Supplier</a></li>
             <li class="breadcrumb-item active">Tambah</li>
         </ol>
     </nav>
@@ -21,7 +21,7 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('suppliers.store') }}" method="POST">
+                    <form action="{{ route('admin.suppliers.store') }}" method="POST">
                         @csrf
 
                         <div class="mb-3">
@@ -73,7 +73,7 @@
                             <button type="submit" class="btn btn-primary">
                                 <i class="bi bi-check-lg"></i> Simpan
                             </button>
-                            <a href="{{ route('suppliers.index') }}" class="btn btn-secondary">
+                            <a href="{{ route('admin.suppliers.index') }}" class="btn btn-secondary">
                                 <i class="bi bi-x-lg"></i> Batal
                             </a>
                         </div>

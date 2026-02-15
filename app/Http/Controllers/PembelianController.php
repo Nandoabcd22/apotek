@@ -78,7 +78,7 @@ class PembelianController extends Controller
             }
 
             DB::commit();
-            return redirect()->route('pembelians.index')->with('success', 'Pembelian berhasil dibuat');
+            return redirect()->route('admin.pembelians.index')->with('success', 'Pembelian berhasil dibuat');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
@@ -161,7 +161,7 @@ class PembelianController extends Controller
             }
 
             DB::commit();
-            return redirect()->route('pembelians.index')->with('success', 'Pembelian berhasil diperbarui');
+            return redirect()->route('admin.pembelians.index')->with('success', 'Pembelian berhasil diperbarui');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
@@ -182,7 +182,7 @@ class PembelianController extends Controller
 
             $pembelian->delete();
             DB::commit();
-            return redirect()->route('pembelians.index')->with('success', 'Pembelian berhasil dihapus');
+            return redirect()->route('admin.pembelians.index')->with('success', 'Pembelian berhasil dihapus');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());

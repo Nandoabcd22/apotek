@@ -38,6 +38,15 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $request->remember)) {
             $request->session()->regenerate();
+            
+            // Redirect based on user role
+            $user = Auth::user();
+            if ($user->isApoteker()) {
+                return redirect()->route('apoteker.obats.index')->with('success', 'Login berhasil!');
+            } elseif ($user->isPelanggan()) {
+                return redirect()->route('pelanggan.obats.index')->with('success', 'Login berhasil!');
+            }
+            
             return redirect()->route('dashboard')->with('success', 'Login berhasil!');
         }
 

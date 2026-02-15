@@ -3,7 +3,7 @@
 @section('title', 'Detail Apoteker')
 
 @section('breadcrumb')
-    <a href="{{ route('dashboard') }}">Dashboard</a> / <a href="{{ route('users.index') }}">Daftar Apoteker</a> / Detail Apoteker
+    <a href="{{ route('dashboard') }}">Dashboard</a> / <a href="{{ route('admin.users.index') }}">Daftar Apoteker</a> / Detail Apoteker
 @endsection
 
 @section('content')
@@ -36,18 +36,18 @@
                 </div>
 
                 <div class="d-flex gap-2">
-                    <a href="{{ route('users.edit', $user) }}" class="btn btn-warning">
+                    <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-warning">
                         <i class="bi bi-pencil"></i> Edit
                     </a>
                     <button class="btn btn-danger" onclick="deleteUser()">
                         <i class="bi bi-trash"></i> Hapus
                     </button>
-                    <a href="{{ route('users.index') }}" class="btn btn-secondary">
+                    <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">
                         <i class="bi bi-arrow-left"></i> Kembali
                     </a>
                 </div>
 
-                <form id="delete-form" action="{{ route('users.destroy', $user) }}" method="POST" style="display: none;">
+                <form id="delete-form" action="{{ route('admin.users.destroy', $user) }}" method="POST" style="display: none;">
                     @csrf
                     @method('DELETE')
                 </form>

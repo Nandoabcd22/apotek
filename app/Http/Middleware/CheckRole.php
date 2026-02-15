@@ -13,9 +13,24 @@ class CheckRole
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, string $role): Response
+    public function handle(Request $request, Closure $next, string $roles): Response
     {
-        if ($request->user() === null || !$request->user()->hasRole($role)) {
+        if ($request->user() === null) {
+            abort(403, 'Unauthorized');
+        }
+
+        // Support pipe-separated roles (role:admin|apoteker)
+        $roleList = explode('|', $roles);
+        $hasRole = false;
+        
+        foreach ($roleList as $role) {
+            if ($request->user()->hasRole(trim($role))) {
+                $hasRole = true;
+                break;
+            }
+        }
+
+        if (!$hasRole) {
             abort(403, 'Unauthorized');
         }
 

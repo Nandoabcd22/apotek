@@ -6,7 +6,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('pembelians.index') }}">Pembelian</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.pembelians.index') }}">Pembelian</a></li>
             <li class="breadcrumb-item active">{{ $pembelian->no_pembelian }}</li>
         </ol>
     </nav>
@@ -16,10 +16,10 @@
     <div class="page-header d-flex justify-content-between align-items-center">
         <h3 class="mb-0">Detail Pembelian</h3>
         <div>
-            <a href="{{ route('pembelians.edit', $pembelian) }}" class="btn btn-warning">
+            <a href="{{ route('admin.pembelians.edit', $pembelian) }}" class="btn btn-warning">
                 <i class="bi bi-pencil"></i> Edit
             </a>
-            <a href="{{ route('pembelians.index') }}" class="btn btn-secondary">
+            <a href="{{ route('admin.pembelians.index') }}" class="btn btn-secondary">
                 <i class="bi bi-arrow-left"></i> Kembali
             </a>
         </div>
@@ -43,7 +43,7 @@
                     <div class="mb-3">
                         <label class="form-label">Supplier</label>
                         <p class="text-muted">
-                            <a href="{{ route('suppliers.show', $pembelian->supplier) }}">
+                            <a href="{{ route('admin.suppliers.show', $pembelian->supplier) }}">
                                 {{ $pembelian->supplier->nama_supplier ?? '-' }}
                             </a>
                         </p>

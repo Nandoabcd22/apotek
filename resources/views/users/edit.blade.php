@@ -3,7 +3,7 @@
 @section('title', 'Edit Apoteker')
 
 @section('breadcrumb')
-    <a href="{{ route('dashboard') }}">Dashboard</a> / <a href="{{ route('users.index') }}">Daftar Apoteker</a> / Edit Apoteker
+    <a href="{{ route('dashboard') }}">Dashboard</a> / <a href="{{ route('admin.users.index') }}">Daftar Apoteker</a> / Edit Apoteker
 @endsection
 
 @section('content')
@@ -15,7 +15,7 @@
     <div class="col-md-8">
         <div class="card">
             <div class="card-body">
-                <form action="{{ route('users.update', $user) }}" method="POST">
+                <form action="{{ route('admin.users.update', $user) }}" method="POST">
                     @csrf
                     @method('PUT')
 
@@ -52,7 +52,7 @@
                         <button type="submit" class="btn btn-primary">
                             <i class="bi bi-check-circle"></i> Simpan
                         </button>
-                        <a href="{{ route('users.show', $user) }}" class="btn btn-secondary">
+                        <a href="{{ route('admin.users.show', $user) }}" class="btn btn-secondary">
                             <i class="bi bi-arrow-left"></i> Kembali
                         </a>
                     </div>

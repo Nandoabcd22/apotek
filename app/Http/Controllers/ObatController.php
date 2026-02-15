@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Obat;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class ObatController extends Controller
 {
@@ -30,11 +31,13 @@ class ObatController extends Controller
             'harga_beli' => 'required|numeric|min:0',
             'harga_jual' => 'required|numeric|min:0',
             'stok' => 'required|integer|min:0',
+            'tanggal_kadaluarsa' => 'required|date|after:today',
             'id_supplier' => 'required|exists:suppliers,id_supplier',
         ]);
 
         Obat::create($request->all());
-        return redirect()->route('obats.index')->with('success', 'Obat berhasil ditambahkan');
+        $prefix = auth()->user()->getRoutePrefix();
+        return redirect()->route($prefix . '.obats.index')->with('success', 'Obat berhasil ditambahkan');
     }
 
     public function show(Obat $obat)
@@ -58,16 +61,57 @@ class ObatController extends Controller
             'harga_beli' => 'required|numeric|min:0',
             'harga_jual' => 'required|numeric|min:0',
             'stok' => 'required|integer|min:0',
+            'tanggal_kadaluarsa' => 'required|date|after:today',
             'id_supplier' => 'required|exists:suppliers,id_supplier',
         ]);
 
         $obat->update($request->all());
-        return redirect()->route('obats.index')->with('success', 'Obat berhasil diperbarui');
+        $prefix = auth()->user()->getRoutePrefix();
+        return redirect()->route($prefix . '.obats.index')->with('success', 'Obat berhasil diperbarui');
     }
 
     public function destroy(Obat $obat)
     {
         $obat->delete();
-        return redirect()->route('obats.index')->with('success', 'Obat berhasil dihapus');
+        $prefix = auth()->user()->getRoutePrefix();
+        return redirect()->route($prefix . '.obats.index')->with('success', 'Obat berhasil dihapus');
+    }
+
+    // Custom method untuk obat yang kedaluarsa
+    public function expired()
+    {
+        $today = Carbon::today();
+        $obats = Obat::where('tanggal_kadaluarsa', '<', $today)
+            ->with('supplier')
+            ->paginate(10);
+        return view('obats.expired', compact('obats'));
+    }
+
+    // Custom method untuk search obat
+    public function search(Request $request)
+    {
+        $query = Obat::with('supplier');
+
+        if ($request->filled('nama_obat')) {
+            $query->where('nama_obat', 'like', '%' . $request->nama_obat . '%');
+        }
+
+        if ($request->filled('jenis')) {
+            $query->where('jenis', $request->jenis);
+        }
+
+        if ($request->filled('stok_rendah') && $request->stok_rendah == 'on') {
+            $query->where('stok', '<', 20);
+        }
+
+        if ($request->filled('akan_kadaluarsa') && $request->akan_kadaluarsa == 'on') {
+            $today = Carbon::today();
+            $threeMonthsLater = Carbon::today()->addMonths(3);
+            $query->whereBetween('tanggal_kadaluarsa', [$today, $threeMonthsLater]);
+        }
+
+        $obats = $query->paginate(10);
+        
+        return view('obats.search', compact('obats'));
     }
 }

@@ -1,3 +1,5 @@
+@php $prefix = auth()->user()->getRoutePrefix(); @endphp
+
 @extends('layouts.app')
 
 @section('title', 'Detail Penjualan')
@@ -6,7 +8,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('penjualans.index') }}">Penjualan</a></li>
+            <li class="breadcrumb-item"><a href="{{ route($prefix . '.penjualans.index') }}">Penjualan</a></li>
             <li class="breadcrumb-item active">{{ $penjualan->no_penjualan }}</li>
         </ol>
     </nav>
@@ -16,10 +18,10 @@
     <div class="page-header d-flex justify-content-between align-items-center">
         <h3 class="mb-0">Detail Penjualan</h3>
         <div>
-            <a href="{{ route('penjualans.edit', $penjualan) }}" class="btn btn-warning">
+            <a href="{{ route($prefix . '.penjualans.edit', $penjualan) }}" class="btn btn-warning">
                 <i class="bi bi-pencil"></i> Edit
             </a>
-            <a href="{{ route('penjualans.index') }}" class="btn btn-secondary">
+            <a href="{{ route($prefix . '.penjualans.index') }}" class="btn btn-secondary">
                 <i class="bi bi-arrow-left"></i> Kembali
             </a>
         </div>
@@ -43,9 +45,7 @@
                     <div class="mb-3">
                         <label class="form-label">Pelanggan</label>
                         <p class="text-muted">
-                            <a href="{{ route('pelanggans.show', $penjualan->pelanggan) }}">
-                                {{ $penjualan->pelanggan->nama_pelanggan ?? '-' }}
-                            </a>
+                            {{ $penjualan->user->name ?? '-' }}
                         </p>
                     </div>
                 </div>
@@ -58,19 +58,6 @@
                     <h5 class="mb-0">Ringkasan Pembayaran</h5>
                 </div>
                 <div class="card-body">
-                    <div class="mb-3">
-                        <label class="form-label">Subtotal</label>
-                        <p class="text-muted">
-                            Rp {{ number_format($penjualan->total / (1 - $penjualan->diskon / 100), 0, ',', '.') }}
-                        </p>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Diskon</label>
-                        <p class="text-muted">
-                            {{ $penjualan->diskon }}% (Rp {{ number_format($penjualan->total / (1 - $penjualan->diskon / 100) * ($penjualan->diskon / 100), 0, ',', '.') }})
-                        </p>
-                    </div>
-                    <hr>
                     <div class="mb-3">
                         <label class="form-label">Total Pembayaran</label>
                         <p class="text-muted"><strong>Rp {{ number_format($penjualan->total, 0, ',', '.') }}</strong></p>
