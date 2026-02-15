@@ -21,16 +21,28 @@ class DatabaseSeeder extends Seeder
                 'role' => 'admin'
             ],
             [
-                'name' => 'Kasir 1',
-                'email' => 'kasir1@apotek.com',
+                'name' => 'Apoteker 1',
+                'email' => 'apoteker1@apotek.com',
                 'password' => bcrypt('password'),
-                'role' => 'kasir'
+                'role' => 'apoteker'
             ],
             [
-                'name' => 'Kasir 2',
-                'email' => 'kasir2@apotek.com',
+                'name' => 'Apoteker 2',
+                'email' => 'apoteker2@apotek.com',
                 'password' => bcrypt('password'),
-                'role' => 'kasir'
+                'role' => 'apoteker'
+            ],
+            [
+                'name' => 'Pelanggan 1',
+                'email' => 'pelanggan1@apotek.com',
+                'password' => bcrypt('password'),
+                'role' => 'pelanggan'
+            ],
+            [
+                'name' => 'Pelanggan 2',
+                'email' => 'pelanggan2@apotek.com',
+                'password' => bcrypt('password'),
+                'role' => 'pelanggan'
             ],
         ];
 

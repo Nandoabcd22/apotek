@@ -96,7 +96,14 @@
                             <i class="bi bi-house-door"></i> Dashboard
                         </a>
                     </li>
+
                     @if(auth()->user()->isAdmin())
+                    <!-- Admin Menu -->
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('users*') ? 'active' : '' }}" href="{{ route('users.index') }}">
+                            <i class="bi bi-person-badge"></i> Daftar Apoteker
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('obats*') ? 'active' : '' }}" href="{{ route('obats.index') }}">
                             <i class="bi bi-capsule"></i> Data Obat
@@ -107,21 +114,45 @@
                             <i class="bi bi-building"></i> Supplier
                         </a>
                     </li>
-                    @endif
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('pelanggans*') ? 'active' : '' }}" href="{{ route('pelanggans.index') }}">
-                            <i class="bi bi-people"></i> Pelanggan
+                            <i class="bi bi-people"></i> Daftar Pelanggan
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('penjualans*') ? 'active' : '' }}" href="{{ route('penjualans.index') }}">
-                            <i class="bi bi-bag-check"></i> Penjualan
+                            <i class="bi bi-bag-check"></i> Report Penjualan
                         </a>
                     </li>
-                    @if(auth()->user()->isAdmin())
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('pembelians*') ? 'active' : '' }}" href="{{ route('pembelians.index') }}">
-                            <i class="bi bi-cart3"></i> Pembelian
+                            <i class="bi bi-cart3"></i> Daftar Pembelian
+                        </a>
+                    </li>
+
+                    @elseif(auth()->user()->isApoteker())
+                    <!-- Apoteker Menu -->
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('obats*') ? 'active' : '' }}" href="{{ route('obats.index') }}">
+                            <i class="bi bi-capsule"></i> Data Obat
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('penjualans*') ? 'active' : '' }}" href="{{ route('penjualans.index') }}">
+                            <i class="bi bi-bag-check"></i> History Penjualan
+                        </a>
+                    </li>
+
+                    @elseif(auth()->user()->isPelanggan())
+                    <!-- Pelanggan Menu -->
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('obats*') ? 'active' : '' }}" href="{{ route('obats.index') }}">
+                            <i class="bi bi-capsule"></i> Daftar Obat
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('penjualans*') ? 'active' : '' }}" href="{{ route('penjualans.index') }}">
+                            <i class="bi bi-bag-check"></i> Pembelian Saya
                         </a>
                     </li>
                     @endif
